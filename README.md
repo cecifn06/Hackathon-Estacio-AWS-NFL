@@ -13,6 +13,10 @@ Feita como protótipo de hackathon (NFL Big Data Bowl), em **HTML + CSS +
 JavaScript puro** — sem frameworks, sem build e sem nenhuma biblioteca externa.
 Toda a interface é **em português**.
 
+> 🛠️ **Desenvolvido com o [Kiro](https://kiro.dev).** Este projeto foi criado
+> usando o Kiro como IDE de desenvolvimento assistido por IA, conforme a
+> proposta do hackathon. Veja a seção [Desenvolvido com o Kiro](#desenvolvido-com-o-kiro).
+
 ---
 
 ## Índice
@@ -28,6 +32,7 @@ Toda a interface é **em português**.
   - [Coverage Reveal Score (CRS)](#coverage-reveal-score-crs)
   - [Camada preditiva (Movement Probability)](#camada-preditiva-movement-probability)
   - [Orientação ao Técnico](#orientação-ao-técnico)
+- [Desenvolvido com o Kiro](#desenvolvido-com-o-kiro)
 - [Estrutura dos arquivos](#estrutura-dos-arquivos)
 - [De onde vêm os dados](#de-onde-vêm-os-dados)
 - [Limitações desta versão](#limitações-desta-versão)
@@ -169,6 +174,28 @@ provável (com a porcentagem) e sugere explorar o espaço oposto. Quando o padr�
 principal é fraco (abaixo de 40%) ou a amostra é pequena, a ferramenta assume
 isso e mostra que a evidência histórica é insuficiente para uma sugestão
 confiável.
+
+---
+
+## Desenvolvido com o Kiro
+
+Este projeto foi construído usando o **[Kiro](https://kiro.dev)**, um ambiente
+de desenvolvimento com IA, o que era a proposta central do hackathon: criar uma
+aplicação apoiando-se no Kiro durante todo o processo.
+
+O Kiro foi usado como parceiro de desenvolvimento para:
+
+- **Explorar e entender os dados** do NFL Big Data Bowl (CSVs de tracking,
+  jogadas, jogos e scouting) antes de decidir o que construir;
+- **Estruturar a aplicação** em HTML, CSS e JavaScript puro, sem frameworks;
+- **Implementar a lógica** de renderização do campo, animação, métricas de
+  cobertura, Coverage Reveal Score e a camada preditiva de movimento;
+- **Processar os dados brutos** para gerar os arquivos embutidos
+  (`play_data.js` e `predictions.js`);
+- **Escrever e revisar** a documentação do projeto.
+
+O fluxo de trabalho combinou a análise dos dados reais com a assistência do
+Kiro para transformar rastreamento bruto em uma ferramenta visual e preditiva.
 
 ---
 
