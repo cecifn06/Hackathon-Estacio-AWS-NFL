@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raio-X do Movimento</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- ===== CABEÇALHO ===== -->
+    <header class="topbar">
+      <div class="brand">
+        <!-- símbolo: bola de futebol americano minimalista (SVG inline, offline, sem fundo) -->
+        <svg class="brand-ball" viewBox="0 0 64 40" aria-hidden="true">
+          <!-- corpo da bola -->
+          <ellipse cx="32" cy="20" rx="30" ry="17"
+                   fill="none" stroke="url(#ballGrad)" stroke-width="2.6"/>
+          <!-- costura central -->
+          <line x1="16" y1="20" x2="48" y2="20" stroke="url(#ballGrad)" stroke-width="2.4" stroke-linecap="round"/>
+          <!-- laços da costura -->
+          <line x1="22" y1="16" x2="22" y2="24" stroke="url(#ballGrad)" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="28" y1="15.2" x2="28" y2="24.8" stroke="url(#ballGrad)" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="34" y1="15.2" x2="34" y2="24.8" stroke="url(#ballGrad)" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="40" y1="16" x2="40" y2="24" stroke="url(#ballGrad)" stroke-width="2.2" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="ballGrad" x1="0" y1="0" x2="64" y2="40" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#29e0a8"/>
+              <stop offset="1" stop-color="#38bdf8"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="brand-text">
+          <h1>RAIO-X DO MOVIMENTO</h1>
+          <p class="tagline">Análise de movimento baseada em tracking</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <label class="toggle">
+          <input type="checkbox" id="togglePred" checked />
+          <span>Mostrar previsão de movimento</span>
+        </label>
+        <div class="play-select">
+          <label for="playSelect">Jogada</label>
+          <select id="playSelect"></select>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== BARRA COMPACTA DE INFO DA JOGADA ===== -->
+    <section class="scorebar" id="scorebar">
+      <div class="team team-home">
+        <span class="team-abbr" id="sbHome">—</span>
+      </div>
+      <div class="vs">VS</div>
+      <div class="team team-away">
+        <span class="team-abbr" id="sbAway">—</span>
+      </div>
+      <div class="sb-sep"></div>
+      <div class="sb-situation">
+        <span id="sbDown">—</span>
+        <span class="sb-dot">·</span>
+        <span id="sbClock">—</span>
+      </div>
+      <div class="sb-moment" id="sbMoment">MOMENTO: PRÉ-LANÇAMENTO</div>
+    </section>
+
+    <!-- ===== ÁREA PRINCIPAL: CAMPO + PAINEL ===== -->
+    <main class="main">
+      <!-- CAMPO (elemento principal) -->
+      <div class="field-wrap">
+        <div class="phase-banner" id="phaseBanner">PRÉ-SNAP</div>
+        <canvas id="field" width="1200" height="534"></canvas>
+
+        <div class="legend">
+          <span class="legend-item"><i class="dot dot-off"></i> Ataque</span>
+          <span class="legend-item"><i class="dot dot-route"></i> Em rota</span>
+          <span class="legend-item"><i class="dot dot-def"></i> Defesa</span>
+          <span class="legend-item"><i class="dot dot-cov"></i> Cobertura</span>
+          <span class="legend-item"><i class="dot dot-ball"></i> Bola</span>
+          <span class="legend-sep"></span>
+          <span class="legend-item"><i class="arrow-key arrow-1"></i> Mais provável</span>
+          <span class="legend-item"><i class="arrow-key arrow-2"></i> 2ª</span>
+          <span class="legend-item"><i class="arrow-key arrow-3"></i> 3ª</span>
+        </div>
+
+        <!-- métricas discretas da jogada -->
+        <div class="field-metrics">
+          <span><b id="mCoverage">—</b> Cobertura</span>
+          <span><b id="mSeparation">—</b> Separação</span>
+          <span><b id="mCRS">—</b> Coverage Reveal Score</span>
+        </div>
+      </div>
+
+      <!-- ===== CONTROLES / LINHA DO TEMPO (logo abaixo do campo) ===== -->
+      <section class="controls">
+        <div class="buttons">
+          <button id="btnPlay" class="btn btn-primary">▶ Reproduzir</button>
+          <button id="btnPause" class="btn">⏸ Pausar</button>
+          <button id="btnReset" class="btn">↺ Reiniciar</button>
+        </div>
+
+        <div class="timeline">
+          <input type="range" id="slider" min="1" max="43" value="1" step="1" />
+          <div class="timeline-meta">
+            <span id="frameLabel">FRAME 1 / 43</span>
+            <span id="eventLabel" class="event-label"></span>
+          </div>
+        </div>
+
+        <div class="phase-markers" id="phaseMarkers"></div>
+      </section>
+
+      <!-- PAINEL LATERAL COMPACTO -->
+      <aside class="side">
+        <div class="card pred-card">
+          <h2>Previsão de Movimento</h2>
+          <div id="predPlayerName" class="pred-player">Selecione um jogador no campo</div>
+          <ul class="pred-list" id="predList"></ul>
+          <p class="pred-note">Estimativa baseada em padrões históricos de movimento.</p>
+        </div>
+
+        <div class="card coach-card">
+          <h2>Orientação ao Técnico</h2>
+          <p class="coach-text" id="coachText">Selecione um jogador para ver a orientação.</p>
+        </div>
+      </aside>
+    </main>
+
+    <!-- ===== RODAPÉ ===== -->
+    <footer class="foot">
+      Protótipo — previsão baseada em padrões históricos de tracking. Não é uma
+      estatística oficial da NFL nem uma transmissão ao vivo.
+    </footer>
+
+  </div>
+
+  <script src="play_data.js"></script>
+  <script src="predictions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
